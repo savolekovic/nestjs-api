@@ -1,4 +1,11 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 
 @Controller('feed')
-export class FeedController {}
+export class FeedController {
+
+    @Post()
+    create(){
+        
+    }
+
+}
