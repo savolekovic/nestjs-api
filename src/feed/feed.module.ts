@@ -5,10 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { FeedPostEntity } from './models/post.entity';
 
 @Module({
-  imports:[
-    TypeOrmModule.forFeature([FeedPostEntity])
-  ],
+  imports: [TypeOrmModule.forFeature([FeedPostEntity])],
   controllers: [FeedController],
-  providers: [FeedService]
+  providers: [FeedService],
 })
 export class FeedModule {}

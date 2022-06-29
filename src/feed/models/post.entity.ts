@@ -1,13 +1,18 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('feed_post')
-export class FeedPostEntity{
-    @PrimaryGeneratedColumn()
-    id: number;
+export class FeedPostEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({default: ''})
-    body: string;
+  @Column({ default: '' })
+  body: string;
 
-    @CreateDateColumn()
-    createdAt: Date;
-} 
+  @CreateDateColumn()
+  createdAt: Date;
+}
