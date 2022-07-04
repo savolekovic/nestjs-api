@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-import { User } from '../models/user.interface';
+import { User } from '../models/user.class';
 import { UserEntity } from '../models/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';

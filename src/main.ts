@@ -1,8 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
 
 import * as fs from 'fs';
 import * as morgan from 'morgan';
+
+import { AppModule } from './app.module';
 
 const logStream = fs.createWriteStream('api.log', {
   flags: 'a', //append
@@ -11,6 +13,7 @@ const logStream = fs.createWriteStream('api.log', {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
+  app.useGlobalPipes(new ValidationPipe());
   app.use(morgan('tiny', { stream: logStream }));
   await app.listen(3000);
 }
