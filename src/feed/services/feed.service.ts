@@ -22,11 +22,23 @@ export class FeedService {
     return from(this.feedPostRepository.find());
   }
 
+  // findPosts(take: number, skip: number): Observable<FeedPost[]> {
+  //   return from(
+  //     this.feedPostRepository.findAndCount({ take, skip }).then(([posts]) => {
+  //       return <FeedPost[]>posts;
+  //     }),
+  //   );
+  // }
+
   findPosts(take: number, skip: number): Observable<FeedPost[]> {
     return from(
-      this.feedPostRepository.findAndCount({ take, skip }).then(([posts]) => {
-        return <FeedPost[]>posts;
-      }),
+      this.feedPostRepository
+        .createQueryBuilder('post')
+        .innerJoinAndSelect('post.author', 'author')
+        .orderBy('post.createdAt', 'DESC')
+        .take(take)
+        .skip(skip)
+        .getMany(),
     );
   }
 
@@ -36,5 +48,16 @@ export class FeedService {
 
   deletePost(id: number): Observable<DeleteResult> {
     return from(this.feedPostRepository.delete(id));
+  }
+
+  findPostById(id: number): Observable<FeedPost> {
+    return from(
+      this.feedPostRepository.findOne({
+        where: {
+          id,
+        },
+        relations: ['author'] 
+      }),
+    );
   }
 }
