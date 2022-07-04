@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import * as bcrypt from 'bcrypt';
@@ -53,16 +53,23 @@ export class AuthService {
         },
       }),
     ).pipe(
-      switchMap((user: User) =>
-        from(bcrypt.compare(password, user.password)).pipe(
+      switchMap((user: User) => {
+        if (!user) {
+          throw new HttpException(
+            { status: HttpStatus.NOT_FOUND, error: 'Invalid Credentials' },
+            HttpStatus.NOT_FOUND,
+          );
+        }
+
+        return from(bcrypt.compare(password, user.password)).pipe(
           map((isValidPassword: boolean) => {
             if (isValidPassword) {
               delete user.password;
               return user;
             }
           }),
-        ),
-      ),
+        );
+      }),
     );
   }
 
@@ -85,7 +92,7 @@ export class AuthService {
         where: {
           id,
         },
-        relations: ['feedPosts'] 
+        relations: ['feedPosts'],
       }),
     ).pipe(
       map((user: User) => {
